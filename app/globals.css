@@ -1,26 +1,669 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ========================================
+   DESIGN SYSTEM — Academic Catholic Theme
+   ======================================== */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Color Palette */
+  --color-parchment: #FDFBF7;
+  --color-parchment-dark: #F5F0E8;
+  --color-charcoal: #1A1A1A;
+  --color-charcoal-light: #2D2D2D;
+  --color-cardinal: #8B0000;
+  --color-cardinal-light: #A52A2A;
+  --color-cardinal-dark: #6B0000;
+  --color-navy: #000080;
+  --color-navy-light: #1A1A9A;
+  --color-gold: #B8860B;
+  --color-gold-light: #DAA520;
+  --color-gold-muted: #C4A35A;
+  --color-warm-gray: #8B8680;
+  --color-border-light: #E8E0D4;
+
+  /* Fonts */
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-lora);
+  --font-ui: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ========================================
+   THEMES & FONT SCALES
+   ======================================== */
+
+html, :root, .theme-parchment {
+  --color-parchment: #FDFBF7;
+  --color-parchment-dark: #F5F0E8;
+  --color-charcoal: #1A1A1A;
+  --color-charcoal-light: #2D2D2D;
+  --color-border-light: #E8E0D4;
+}
+
+html.theme-sepia, :root.theme-sepia, .theme-sepia {
+  --color-parchment: #F4ECD8 !important;
+  --color-parchment-dark: #EADFCA !important;
+  --color-charcoal: #433422 !important;
+  --color-charcoal-light: #5C4A37 !important;
+  --color-border-light: #DECDB3 !important;
+}
+
+html.theme-dark, :root.theme-dark, .theme-dark {
+  --color-parchment: #121212 !important;
+  --color-parchment-dark: #1A1A1A !important;
+  --color-charcoal: #E5DFD3 !important;
+  --color-charcoal-light: #F5F0E6 !important;
+  --color-border-light: #2C2C2C !important;
+  --color-warm-gray: #8F8B85 !important;
+}
+
+/* Font Sizing scales */
+.text-size-sm .prose p, .text-size-sm .prose blockquote, .text-size-sm .prose li, .text-size-sm .prose td { font-size: 1rem !important; }
+.text-size-base .prose p, .text-size-base .prose blockquote, .text-size-base .prose li, .text-size-base .prose td { font-size: 1.125rem !important; }
+.text-size-lg .prose p, .text-size-lg .prose blockquote, .text-size-lg .prose li, .text-size-lg .prose td { font-size: 1.25rem !important; }
+.text-size-xl .prose p, .text-size-xl .prose blockquote, .text-size-xl .prose li, .text-size-xl .prose td { font-size: 1.375rem !important; }
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-parchment);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+}
+
+/* Smooth Transitions for Theme Switching */
+body, main, aside, footer, article, blockquote, table, tr, td, th, a, hr {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+::selection {
+  background-color: #8B000030;
+  color: var(--color-cardinal-dark);
+}
+
+/* ========================================
+   READING PROGRESS BAR
+   ======================================== */
+
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-cardinal) 0%,
+    var(--color-gold) 50%,
+    var(--color-cardinal) 100%
+  );
+  z-index: 100;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 0 6px rgba(139, 0, 0, 0.4);
+}
+
+/* ========================================
+   DROP CAP
+   ======================================== */
+
+.drop-cap > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
+  line-height: 0.75;
+  padding-right: 0.6rem;
+  padding-top: 0.25rem;
+  color: var(--color-cardinal);
+  font-weight: 700;
+}
+
+/* ========================================
+   SECTION DIVIDER — Cross Flourish
+   ======================================== */
+
+.prose hr {
+  border: none !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative;
+  margin: 3rem auto !important;
+  overflow: visible !important;
+  background: none !important;
+}
+
+.prose hr::before {
+  content: "✦  ✝  ✦";
+  position: absolute;
+  display: block;
+  font-size: 0.9rem;
+  letter-spacing: 0.4em;
+  color: var(--color-gold);
+  text-align: center;
+  background: var(--color-parchment);
+  padding: 0 1.5rem;
+  z-index: 1;
+}
+
+.prose hr::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border-light) 20%,
+    var(--color-gold-muted) 50%,
+    var(--color-border-light) 80%,
+    transparent
+  );
+  z-index: 0;
+}
+
+/* ========================================
+   PROSE OVERRIDES — Typography Plugin
+   ======================================== */
+
+.prose {
+  --tw-prose-body: var(--color-charcoal);
+  --tw-prose-headings: var(--color-charcoal);
+  --tw-prose-links: var(--color-cardinal);
+  --tw-prose-bold: var(--color-charcoal-light);
+  --tw-prose-counters: var(--color-cardinal);
+  --tw-prose-bullets: var(--color-gold);
+  --tw-prose-hr: var(--color-gold);
+  --tw-prose-quote-borders: var(--color-cardinal);
+  --tw-prose-captions: var(--color-warm-gray);
+  --tw-prose-th-borders: var(--color-border-light);
+  --tw-prose-td-borders: var(--color-border-light);
+}
+
+/* Headings */
+.prose h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  color: var(--color-charcoal);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border-light);
+  position: relative;
+}
+
+.prose h2::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--color-cardinal);
+}
+
+.prose h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  color: var(--color-charcoal-light);
+  margin-top: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Body text */
+.prose p {
+  font-size: 1.125rem;
+  line-height: 1.9;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Links */
+.prose a {
+  color: var(--color-cardinal);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.prose a:hover {
+  color: var(--color-cardinal-light);
+  border-bottom-color: var(--color-cardinal-light);
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 3px solid var(--color-cardinal) !important;
+  background: linear-gradient(135deg, #F9F5EE, #FDF9F0);
+  padding: 1.25rem 1.5rem !important;
+  margin: 2rem 0 !important;
+  border-radius: 0 8px 8px 0;
+  font-style: italic !important;
+  font-size: 1.05rem;
+  color: var(--color-charcoal-light);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.prose blockquote::before {
+  content: "\201C";
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  font-size: 3rem;
+  color: var(--color-gold-muted);
+  font-family: var(--font-heading);
+  opacity: 0.5;
+  line-height: 1;
+}
+
+.prose blockquote p {
+  margin-bottom: 0;
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  font-size: 0.95rem;
+  margin: 2rem 0;
+}
+
+.prose thead th {
+  background: linear-gradient(135deg, var(--color-cardinal-dark), var(--color-cardinal));
+  color: #FDF5E6 !important;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--color-gold) !important;
+}
+
+.prose tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border-light) !important;
+  line-height: 1.65;
+}
+
+.prose tbody tr:nth-child(even) {
+  background-color: #F7F2E9;
+}
+
+.prose tbody tr:nth-child(odd) {
+  background-color: #FDFBF7;
+}
+
+.prose tbody tr:hover {
+  background-color: #F0EBE0;
+  transition: background-color 0.15s ease;
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Ordered & Unordered lists */
+.prose ol {
+  padding-left: 1.5rem;
+}
+
+.prose ol > li {
+  padding-left: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose ol > li::marker {
+  color: var(--color-cardinal);
+  font-weight: 700;
+}
+
+.prose ul > li::marker {
+  color: var(--color-gold);
+}
+
+/* Superscript citations */
+.prose sup {
+  font-size: 0.75rem;
+  color: var(--color-cardinal);
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(139, 0, 0, 0.08), rgba(139, 0, 0, 0.03));
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  margin: 0 0.1em;
+  transition: all 0.2s ease;
+  top: -0.5em;
+  position: relative;
+  font-family: var(--font-ui);
+  box-shadow: 0 1px 2px rgba(139, 0, 0, 0.05);
+}
+
+.prose sup:hover {
+  background: var(--color-cardinal);
+  color: #FDF5E6;
+  border-color: var(--color-cardinal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(139, 0, 0, 0.15);
+}
+
+.prose sup a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+/* Strong text */
+.prose strong {
+  color: var(--color-charcoal);
+  font-weight: 700;
+}
+
+/* ========================================
+   TABLE OF CONTENTS
+   ======================================== */
+
+.toc-link {
+  display: block;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--color-warm-gray);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+  line-height: 1.45;
+}
+
+.toc-link:hover {
+  color: var(--color-charcoal);
+  border-left-color: var(--color-border-light);
+}
+
+.toc-link.active {
+  color: var(--color-cardinal);
+  border-left-color: var(--color-cardinal);
+  font-weight: 600;
+  background: linear-gradient(90deg, rgba(139, 0, 0, 0.04), transparent);
+}
+
+.toc-link-h3 {
+  padding-left: 1.5rem;
+  font-size: 0.78rem;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.hero-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--color-gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  margin: 1.5rem 0;
+}
+
+.hero-ornament::before,
+.hero-ornament::after {
+  content: "";
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold-muted),
+    transparent
+  );
+}
+
+/* ========================================
+   MOBILE TOC OVERLAY
+   ======================================== */
+
+.mobile-toc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-toc-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-toc-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  max-width: 85vw;
+  height: 100vh;
+  background: var(--color-parchment);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.mobile-toc-panel.open {
+  transform: translateX(0);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .prose h2 {
+    font-size: 1.5rem;
+  }
+
+  .prose h3 {
+    font-size: 1.2rem;
+  }
+
+  .prose p {
+    font-size: 1.05rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .drop-cap > p:first-of-type::first-letter {
+    font-size: 3.5rem;
+    padding-right: 0.4rem;
+  }
+
+  .prose table {
+    font-size: 0.85rem;
+  }
+
+  .prose thead th,
+  .prose tbody td {
+    padding: 0.6rem 0.7rem;
+  }
+}
+
+/* ========================================
+   ANIMATION
+   ======================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in-up-delay-1 {
+  animation: fadeInUp 0.6s ease-out 0.15s forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-up-delay-2 {
+  animation: fadeInUp 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-up-delay-3 {
+  animation: fadeInUp 0.6s ease-out 0.45s forwards;
+  opacity: 0;
+}
+
+/* Smooth scroll indicator fade */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.scroll-indicator {
+  animation: pulse-soft 2.5s ease-in-out infinite;
+}
+
+/* References section styling */
+.references-section ol {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: ref-counter;
+}
+
+.references-section ol li {
+  counter-increment: ref-counter;
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.references-section ol li::before {
+  content: "[" counter(ref-counter) "]";
+  position: absolute;
+  left: 0;
+  color: var(--color-cardinal);
+  font-weight: 600;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .print\:hidden,
+  .reading-progress-bar,
+  .mobile-toc-overlay,
+  .mobile-toc-panel,
+  aside,
+  button,
+  footer,
+  .hero-ornament::before,
+  .hero-ornament::after,
+  hr::before,
+  hr::after {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .max-w-7xl,
+  .max-w-3xl {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .prose {
+    color: #000000 !important;
+    width: 100% !important;
+  }
+
+  .prose p {
+    text-align: justify !important;
+    font-size: 11pt !important;
+  }
+
+  .prose h2,
+  .prose h3 {
+    page-break-after: avoid;
+    color: #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+  
+  .prose h2::after {
+    display: none !important;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid #000000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-style: italic !important;
+  }
+
+  .prose table {
+    box-shadow: none !important;
+    border: 1px solid #000000 !important;
+  }
+
+  .prose thead th {
+    background: #f0f0f0 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+  }
+
+  .prose tbody td {
+    border-bottom: 1px solid #e0e0e0 !important;
+  }
 }
